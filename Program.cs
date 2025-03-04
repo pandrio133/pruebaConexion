@@ -1,5 +1,6 @@
 ﻿//estructura
 using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 //logica
 namespace pruebaConexion
@@ -8,7 +9,7 @@ namespace pruebaConexion
     {
         static void Main(string[] args)
         {
-            
+                
         }
     }
 }
