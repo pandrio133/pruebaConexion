@@ -10,9 +10,10 @@ namespace pruebaConexion
 
         static void Main(string[] args)
         {
-            Conectar c = new Conectar();
+            
 
-            c.MostrarNombres();
+
+
         }
 
     }
@@ -28,7 +29,7 @@ namespace pruebaConexion
         public SqlConnection Conexion()
         {
             database = "PruebaConexion";
-            user = "";
+            user = "sa";
             password = "159753";
             String LineaConexion = "Server=HP; Database=" + database + ";User Id=" + user + ";Password=" + password + "; trustServerCertificate=true; encrypt=false;";
             SqlConnection conexion = new SqlConnection(LineaConexion);
@@ -57,15 +58,14 @@ namespace pruebaConexion
         {
             using (SqlConnection connection = Conexion())
             {
-                String query = "Insert into personas(Nombre) value (@Nombre)";
+                String query = "Insert into personas(Nombre)values(@Nombre)";
                 using (SqlCommand command = new SqlCommand(query,connection))
                 {
-                    command.Parameters.AddWithValue("@Nombre", nombre);
+                    command.Parameters.AddWithValue("@Nombre",nombre);
                     command.ExecuteNonQuery();
                 }
             }
         }
-
         public void ActualizarNombre(int id, String nombre)
         {
             using (SqlConnection connection= Conexion())
@@ -84,7 +84,7 @@ namespace pruebaConexion
         {
             using(SqlConnection connection = Conexion())
             {
-                String query = "Delet from personas where Id=@Id";
+                String query = "Delete from personas where Id=@Id";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -93,8 +93,24 @@ namespace pruebaConexion
                 }
             }
         }
+        public void EliminarNombre(String nombre)
+        {
+            using(SqlConnection connection = Conexion())
+            {
+                String query = "Delete from personas where Nombre=@Nombre";
 
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Nombre", nombre);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
 
+    }
 
+    public class InterfazGrafica
+    {
+        
     }
 }
