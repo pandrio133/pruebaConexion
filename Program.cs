@@ -21,16 +21,16 @@ namespace pruebaConexion
     {
         public Conectar() { }
 
-        String database { set; get; }
-        String user { set; get; }
-        String password { set; get; }
+        private String database { set; get; }
+        private String user { set; get; }
+        private String password { set; get; }
 
         public SqlConnection Conexion()
         {
             database = "PruebaConexion";
             user = "";
             password = "159753";
-            String LineaConexion = "Server=HP; Database=" + database + ";User Id=sa;Password=" + password + "; trustServerCertificate=true; encrypt=false;";
+            String LineaConexion = "Server=HP; Database=" + database + ";User Id=" + user + ";Password=" + password + "; trustServerCertificate=true; encrypt=false;";
             SqlConnection conexion = new SqlConnection(LineaConexion);
             conexion.Open();
             return conexion;
@@ -66,10 +66,35 @@ namespace pruebaConexion
             }
         }
 
-        public void ActualizarNombre()
+        public void ActualizarNombre(int id, String nombre)
         {
-
+            using (SqlConnection connection= Conexion())
+            {
+                String query = "Update personas set Nombre=@Nombre where Id=@Id";
+                using (SqlCommand command = new SqlCommand(query,connection))
+                {
+                    command.Parameters.AddWithValue("@Nombre", nombre);
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
+
+        public void EliminarNombre(int id)
+        {
+            using(SqlConnection connection = Conexion())
+            {
+                String query = "Delet from personas where Id=@Id";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+
 
     }
 }
