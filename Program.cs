@@ -1,6 +1,9 @@
 ﻿//estructura
 //using System.Data.SqlClient;
 using Microsoft.Data.SqlClient;
+using System.Diagnostics;
+
+
 
 //logica
 namespace pruebaConexion
@@ -10,13 +13,16 @@ namespace pruebaConexion
 
         static void Main(string[] args)
         {
+            /**/
+            IGUConsole star = new IGUConsole();
+            star.run();
             
-
-
-
+            
+            
         }
-
     }
+
+    
 
     class Conectar
     {
@@ -109,8 +115,153 @@ namespace pruebaConexion
 
     }
 
-    public class InterfazGrafica
+    public class IGUConsole
     {
-        
+        public IGUConsole()
+        {
+
+        }
+        public void run()
+        {
+
+            Console.Title = "Prueba de Conexion a BASE DE DATOS SQL ";
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine("=================================================================");
+            Console.WriteLine("=\t\t\tMENÚ DE INICIO\t\t\t\t=");
+            Console.WriteLine("=================================================================");
+            String ingreso;
+            int opt;
+            do
+            {
+                Console.WriteLine("Consultas disponibles::");
+                Console.WriteLine("1) Mostrar Datos" +
+                    "\n2) Insertar Dato" +
+                    "\n3) Actualizar Dato" +
+                    "\n4) Eliminar Dato" +
+                    "\n5) SALIR");
+                Console.WriteLine("=================================================================");
+                ingreso = Console.ReadLine();
+                if (!int.TryParse(ingreso, out opt) || opt>5 ||opt<1 )
+                {
+                    Console.WriteLine("---¡¡Valor Invaliudo!!---");
+                    Console.Beep();
+                    Console.Beep();
+                    Console.Beep();
+                    Console.Beep();
+                }
+            }
+            while (!int.TryParse(ingreso, out opt) || opt > 5 || opt < 1);
+
+            Conectar con = new Conectar();
+            switch (opt)
+            {
+                case 1:  
+                    Console.WriteLine("============ Lista de Nombres ============");
+                    con.MostrarNombres();
+                    Console.WriteLine("==========================================");
+                    run(); 
+                    break;
+                case 2:
+                    Console.WriteLine("Ingrese el nombre a AGREGAR porfavor::");
+                    ingreso = Console.ReadLine();
+                    try
+                    {
+                    con.InsertarNombre(ingreso);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        Console.WriteLine("¡¡ERROR de ingreso!!");
+                        Console.Beep();
+                        Console.Beep();
+                        Console.Beep();
+                        
+                        throw;
+                    }
+                    Console.WriteLine("**Ingresado con EXITO**");
+                    run();
+                    break;
+                case 3: 
+                    int id;
+                    do
+                    {
+                        Console.WriteLine("Ingrese el ID del Nombre a ACTUALIZAR porfavor::");
+                        ingreso = Console.ReadLine();
+                        if (!int.TryParse(ingreso, out id))
+                        {  
+                        Console.WriteLine("---¡¡Valor Invaliudo!!---");
+                        Console.Beep();
+                        Console.Beep();
+                        Console.Beep();
+                        Console.Beep();
+                        }
+                    } while (!int.TryParse(ingreso, out id));
+                    Console.WriteLine("Ingrese el nuevo Nombre porfavor::");
+                    ingreso = Console.ReadLine();
+                    try
+                    {
+                        con.ActualizarNombre(id,ingreso);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        Console.WriteLine("¡¡ERROR de ingreso!!");
+                        Console.Beep();
+                        Console.Beep();
+                        Console.Beep();
+
+                        throw;
+                    }
+                    Console.WriteLine("**Ingresado con EXITO**");
+                    run();
+                    break;
+                case 4:
+                    do
+                    {
+                        Console.WriteLine("Ingrese el ID del Nombre a ELIMINAR porfavor::");
+                        ingreso = Console.ReadLine();
+                        if (!int.TryParse(ingreso, out id))
+                        {
+                            Console.WriteLine("---¡¡Valor Invaliudo!!---");
+                            Console.Beep();
+                            Console.Beep();
+                            Console.Beep();
+                            Console.Beep();
+                        }
+                    } while (!int.TryParse(ingreso, out id));
+                    try
+                    {
+                        con.EliminarNombre(id);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        Console.WriteLine("¡¡ERROR de solicitud!!");
+                        Console.Beep();
+                        Console.Beep();
+                        Console.Beep();
+
+                        throw;
+                    }
+                    Console.WriteLine("**Eliminado con EXITO**");
+                    run();
+                    break;
+                case 5: exit(); break;
+                default:
+                    break;
+            }
+
+        }
+
+        public void exit()
+        {
+             Environment.Exit(0);
+
+        }
+
+    
     }
 }
